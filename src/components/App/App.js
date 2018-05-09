@@ -5,19 +5,40 @@ import SearchResults from "../SearchResults/SearchResults.js";
 import Playlist from "../Playlist/Playlist.js";
 import TrackItem from "../helpers/TrackItem.js";
 
-
 class App extends Component {
   constructor(props) {
     super(props);
 
-    let mySearchResults = [
+    const mySearchResults = [
       new TrackItem(1, "Song 1", "Artist 1", "Album 1"),
       new TrackItem(2, "Song 2", "Artist 2", "Album 2"),
     ];
 
-    this.state = { searchResults: mySearchResults };
+    const myPlaylistName = "my playlist";
+    const myPlaylistTracks = [
+      new TrackItem(3, "Song 3", "Artist 3", "Album 3"),
+      new TrackItem(4, "Song 4", "Artist 4", "Album 4"),
+    ];
 
+    this.state = { searchResults: mySearchResults,
+      playlistName: myPlaylistName,
+      playlistTracks: myPlaylistTracks
+    };
+
+    this.addTrack = this.addTrack.bind(this);
   }
+
+  addTrack(track) {
+    const tracks = this.state.playlistTracks;
+
+    if (tracks.some(trackVal => trackVal.id === track.id)) {
+      return;
+    }
+
+    tracks.push(track);
+    this.setState({playlistTracks: track});
+  }
+
   render() {
     let results = this.state.searchResults;
     console.log(results);
@@ -32,7 +53,8 @@ class App extends Component {
           <SearchBar />
           <div className="App-playlist">
             <SearchResults searchResults={this.state.searchResults} />
-
+            <Playlist playlistName={this.state.playlistName}
+              playlistTracks={this.state.playlistTracks} />
           </div>
         </div>
       </div>

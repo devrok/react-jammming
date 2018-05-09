@@ -1,6 +1,8 @@
 import React, { Component } from "react";
+import PropTypes from 'prop-types';
 import "./Playlist.css";
 import TrackList from "../TrackList/TrackList.js";
+import TrackItem from "../helpers/TrackItem.js";
 
 class Playlist extends Component {
   constructor(props) {
@@ -18,12 +20,17 @@ class Playlist extends Component {
       <div className="Playlist">
         <input value="New Playlist"
           onChange={this.handleInputChange}/>
-        <TrackList />
+        <TrackList tracks={this.props.playlistTracks}/>
         <a className="Playlist-save">SAVE TO SPOTIFY</a>
       </div>
     );
   }
 }
+
+Playlist.propTypes = {
+  playlistName: PropTypes.string,
+  playlistTracks: PropTypes.arrayOf(PropTypes.instanceOf(TrackItem))
+};
 
 export default Playlist;
 // <div class="Playlist">
