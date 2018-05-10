@@ -17,7 +17,11 @@ class TrackList extends Component {
             // console.log("Track " + item.id);
             // console.log(item);
             return (
-              <Track key={item.id} track={item} />
+              <Track key={item.id}
+                track={item}
+                onAdd={this.props.onAdd}
+                onRemove={this.props.onRemove}
+                isRemoval={this.props.isRemoval} />
             );
           })
         }
@@ -27,7 +31,10 @@ class TrackList extends Component {
 }
 
 TrackList.propTypes = {
-  tracks: PropTypes.arrayOf(PropTypes.instanceOf(TrackItem))
+  tracks: PropTypes.arrayOf(PropTypes.instanceOf(TrackItem)),
+  isRemoval: PropTypes.bool,
+  onAdd: PropTypes.func,
+  onRemove: PropTypes.func,
 }
 
 export default TrackList;

@@ -10,14 +10,17 @@ class SearchResults extends Component {
     return (
       <div className="SearchResults">
         <h2>Results</h2>
-        <TrackList tracks={this.props.searchResults} />
+        <TrackList tracks={this.props.searchResults}
+          onAdd={this.props.onAdd}
+          isRemoval={false} />
       </div>
     );
   }
 }
 
 SearchResults.propTypes = {
-  searchResults: PropTypes.arrayOf(PropTypes.instanceOf(TrackItem))
+  searchResults: PropTypes.arrayOf(PropTypes.instanceOf(TrackItem)),
+  onAdd: PropTypes.func
 }
 
 export default SearchResults;
