@@ -37,10 +37,16 @@ class App extends Component {
   search(term) {
     console.log("-- App.js -- search");
     console.log("Searchterm: " + term);
+
+    // Spotify.search(term);
+
     Spotify.search(term).then(resultValue => {
       console.log("--- response before setState")
       console.log(resultValue);
-      // this.setState({searchResults: resultValue});
+
+
+
+       this.setState({searchResults: resultValue});
     });
   }
 
