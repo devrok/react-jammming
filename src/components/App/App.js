@@ -4,6 +4,7 @@ import SearchBar from "../SearchBar/SearchBar.js";
 import SearchResults from "../SearchResults/SearchResults.js";
 import Playlist from "../Playlist/Playlist.js";
 import TrackItem from "../helpers/TrackItem.js";
+import Spotify from "../../util/Spotify.js";
 
 class App extends Component {
   constructor(props) {
@@ -36,6 +37,11 @@ class App extends Component {
   search(term) {
     console.log("-- App.js -- search");
     console.log("Searchterm: " + term);
+    Spotify.search(term).then(resultValue => {
+      console.log("--- response before setState")
+      console.log(resultValue);
+      // this.setState({searchResults: resultValue});
+    });
   }
 
   updatePlaylistName(name) {
