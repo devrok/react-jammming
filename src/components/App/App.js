@@ -38,15 +38,10 @@ class App extends Component {
     console.log("-- App.js -- search");
     console.log("Searchterm: " + term);
 
-    // Spotify.search(term);
-
     Spotify.search(term).then(resultValue => {
       console.log("--- response before setState")
       console.log(resultValue);
-
-
-
-       this.setState({searchResults: resultValue});
+      this.setState({searchResults: resultValue});
     });
   }
 
@@ -76,9 +71,11 @@ class App extends Component {
 
   savePlaylist() {
     console.log("-- App.js -- savePlaylist ");
-    const trackURIs = this.state.playlistTracks.map(trackValue =>{
+    const trackUris = this.state.playlistTracks.map(trackValue =>{
       return trackValue.uri;
-    })
+    });
+
+    Spotify.savePlaylist(this.state.playlistName, trackUris);
   }
 
   render() {
