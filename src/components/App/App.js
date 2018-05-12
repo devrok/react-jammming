@@ -113,26 +113,3 @@ class App extends Component {
 }
 
 export default App;
-
-// <div>
-//   <h1>Ja<span className="highlight">mmm</span>ing</h1>
-//   <div className="App">
-//     <SearchBar />
-//     <div className="App-playlist">
-//       <SearchResults searchResults={this.state.searchResults} />
-//       <Playlist />
-//     </div>
-//   </div>
-// </div>
-
-
-// <div>
-//   <h1>Ja<span class="highlight">mmm</span>ing</h1>
-//   <div class="App">
-//     <!-- Add a SearchBar component -->
-//     <div class="App-playlist">
-//     <!-- Add a SearchResults component -->
-//     <!-- Add a Playlist component -->
-//     </div>
-//   </div>
-// </div>

@@ -26,7 +26,7 @@ const Spotify = {
       window.setTimeout(() => userAccessToken = "", expiresIn * 1000);
       window.history.pushState("Access Token", null, "/");
     } else {
-      let redirect = `https://accounts.spotify.com/authorize?client_id=${CLIENT_ID}&response_type=token&scope=playlist-modify-public&redirect_uri=${REDIRECT_URI}`;
+      let redirect = `https://accounts.spotify.com/authorize?client_id=${CLIENT_ID}&response_type=token&scope=playlist-modify-private&redirect_uri=${REDIRECT_URI}`;
       window.location.replace(redirect);
     }
 
@@ -79,33 +79,26 @@ const Spotify = {
     if (!playlistName || !trackUris) return;
 
     let accessToken = this.getAccessToken();
-    let authorizationHeader = {"Authorization": `Bearer ${accessToken}`};
     // let userId = this.getUserId(authorizationHeader);
 
 
-    this.getUserId(authorizationHeader).then(requestedUserId => {
-
-      console.log("TEST");
-      console.log(requestedUserId);
-
-      this.postPlaylist(requestedUserId, authorizationHeader, playlistName).then(requestedPlaylistId => {
+    this.getUserId(accessToken).then(requestedUserId => {
+      this.postPlaylist(requestedUserId, accessToken, playlistName).then(requestedPlaylistId => {
         console.log(requestedPlaylistId);
       });
     });
-
-
-
-
-
     // let playlistId = this.postPlaylist(userId, authorizationHeader, playlistName);
   },
 
 
 
-  getUserId(authorizationHeader) {
+  getUserId(accessToken) {
     const requestUri = BASE_URI + "me";
     return fetch(requestUri,
-      { headers: authorizationHeader}
+      { headers: {
+          "Authorization": `Bearer ${accessToken}`
+        }
+      }
     ).then(response => {
       if (response.ok) {
         return response.json();
@@ -123,7 +116,7 @@ const Spotify = {
   // "Access-Control-Allow-Methods": "POST",
   // "Access-Control-Allow-Headers": "Content-Type, Authorization",
 
-  postPlaylist(userId, authorizationHeader, playlistName) {
+  postPlaylist(userId, accessToken, playlistName) {
     const postUri = BASE_URI + `users/${userId}/playlists`;
 
     // const postUri = BASE_URI + `users/dk2hqfgbcybxppqeggc4glqqz/playlists`;
@@ -131,19 +124,18 @@ const Spotify = {
     console.log("-- post playlist");
     console.log(postUri);
     console.log(userId);
-    // console.log(authorizationHeader);
+    console.log(accessToken);
 
     return fetch(postUri, {
       method: "POST",
-      headers: {
-        authorizationHeader,
-        "Content-type": "application/json"
-      },
-      body: {
+      headers: new Headers({
+        "Authorization": `Bearer ${accessToken}`,
+        "Content-Type": "application/json"
+      }),
+      body: JSON.stringify({
         "name": playlistName,
-        "description": "",
         "public": false,
-      }
+      })
     }).then(response => {
       if (response.ok) {
         return response.json();
