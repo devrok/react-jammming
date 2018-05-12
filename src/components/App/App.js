@@ -10,17 +10,20 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    const mySearchResults = [
-      new TrackItem(1, "Song 1", "Artist 1", "Album 1", "uri"),
-      new TrackItem(2, "Song 2", "Artist 2", "Album 2", "uri"),
-    ];
+    const mySearchResults = [];
+    //
+    // const mySearchResults = [
+    //   new TrackItem(1, "Song 1", "Artist 1", "Album 1", "uri"),
+    //   new TrackItem(2, "Song 2", "Artist 2", "Album 2", "uri"),
+    // ];
 
-    const myPlaylistName = "my playlist";
-    const myPlaylistTracks = [
-      new TrackItem(1, "Song 1", "Artist 1", "Album 1", "uri"),
-      new TrackItem(3, "Song 3", "Artist 3", "Album 3", "uri"),
-      new TrackItem(4, "Song 4", "Artist 4", "Album 4", "uri"),
-    ];
+    const myPlaylistName = "new playlist";
+    const myPlaylistTracks = [];
+    // const myPlaylistTracks = [
+    //   new TrackItem(1, "Song 1", "Artist 1", "Album 1", "uri"),
+    //   new TrackItem(3, "Song 3", "Artist 3", "Album 3", "uri"),
+    //   new TrackItem(4, "Song 4", "Artist 4", "Album 4", "uri"),
+    // ];
 
     this.state = { searchResults: mySearchResults,
       playlistName: myPlaylistName,
@@ -35,6 +38,9 @@ class App extends Component {
   }
 
   search(term) {
+
+    if (!term) return;
+
     console.log("-- App.js -- search");
     console.log("Searchterm: " + term);
 
@@ -42,6 +48,7 @@ class App extends Component {
       console.log("--- response before setState")
       console.log(resultValue);
       this.setState({searchResults: resultValue});
+
     });
   }
 

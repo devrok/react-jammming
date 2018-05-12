@@ -12,7 +12,6 @@ class Playlist extends Component {
   }
 
   handleInputChange(event) {
-    console.log("-- Playlist.js -- handleInputChange");
     const newValue = event.target.value;
     this.props.onNameChange(newValue);
   }
@@ -41,8 +40,3 @@ Playlist.propTypes = {
 };
 
 export default Playlist;
-// <div class="Playlist">
-//   <input value="New Playlist"/>
-//   <!-- Add a TrackList component -->
-//   <a class="Playlist-save">SAVE TO SPOTIFY</a>
-// </div>

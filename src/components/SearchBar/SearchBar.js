@@ -18,9 +18,6 @@ class SearchBar extends Component {
 
   handleInputChange(event) {
     const newSearchTerm = event.target.value;
-
-    console.log(newSearchTerm);
-
     this.setState({term: newSearchTerm});
   }
 
@@ -40,7 +37,3 @@ SearchBar.propTypes = {
 };
 
 export default SearchBar;
-// <div class="SearchBar">
-//   <input placeholder="Enter A Song, Album, or Artist" />
-//   <a>SEARCH</a>
-// </div>

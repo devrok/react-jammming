@@ -6,7 +6,6 @@ import TrackItem from "../helpers/TrackItem.js";
 
 class SearchResults extends Component {
   render() {
-    console.log(this.props.searchResults);
     return (
       <div className="SearchResults">
         <h2>Results</h2>
@@ -24,7 +23,3 @@ SearchResults.propTypes = {
 }
 
 export default SearchResults;
-// <div className="SearchResults">
-//   <h2>Results</h2>
-//   <!-- Add a TrackList component -->
-// </div>

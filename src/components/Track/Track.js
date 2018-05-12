@@ -12,12 +12,10 @@ class Track extends Component{
   }
 
   addTrack() {
-    console.log("-- Track.js -- Click addTrack");
     this.props.onAdd(this.props.track);
   }
 
   removeTrack() {
-    console.log("-- Track.js -- Click removeTrack");
     this.props.onRemove(this.props.track);
   }
 
@@ -43,10 +41,3 @@ Track.propTypes = {
 }
 
 export default Track;
-// <div class="Track">
-//   <div class="Track-information">
-//     <h3><!-- track name will go here --></h3>
-//     <p><!-- track artist will go here--> | <!-- track album will go here --></p>
-//   </div>
-//   <a class="Track-action"><!-- + or - will go here --></a>
-// </div>

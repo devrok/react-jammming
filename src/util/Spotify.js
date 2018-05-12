@@ -6,6 +6,8 @@ const CLIENT_ID = "994101a1655f491d8e44b2368ec8cc91";
 // dev
 const REDIRECT_URI = "http://localhost:3000/";
 
+const BASE_URI = "https://api.spotify.com/v1/";
+
 let userAccessToken;
 let expiresIn;
 
@@ -36,17 +38,20 @@ const Spotify = {
 
     if (parsedValues && parsedValues.length === 2) return parsedValues[1];
 
-    throw new Error("Value could not be parsed!");
+    return undefined;
   },
+
+
 
   search(searchTerm) {
     let accessToken = this.getAccessToken();
-    const searchUri = `https://api.spotify.com/v1/search?type=track&q=${searchTerm}`;
+
+    if (!searchTerm) return [];
+
+    const searchUri = BASE_URI + `search?type=track&q=${searchTerm}`;
 
     return fetch(searchUri, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`
-      }
+      headers: { "Authorization": `Bearer ${accessToken}` }
     }).then(response => {
       if (response.ok) {
         return response.json();
@@ -74,16 +79,31 @@ const Spotify = {
     if (!playlistName || !trackUris) return;
 
     let accessToken = this.getAccessToken();
-    let header = { headers: {Authorization: `Bearer ${accessToken}`} };
-    let userId = this.getUserId(header);
+    let authorizationHeader = {"Authorization": `Bearer ${accessToken}`};
+    // let userId = this.getUserId(authorizationHeader);
 
 
+    this.getUserId(authorizationHeader).then(requestedUserId => {
+
+      console.log("TEST");
+      console.log(requestedUserId);
+
+      let playlistId = this.postPlaylist(requestedUserId, authorizationHeader, playlistName);
+    });
+
+
+
+
+
+    // let playlistId = this.postPlaylist(userId, authorizationHeader, playlistName);
   },
 
-  getUserId(header) {
-    const requestUri = "https://api.spotify.com/v1/me";
+
+
+  getUserId(authorizationHeader) {
+    const requestUri = BASE_URI + "me";
     return fetch(requestUri,
-      header
+      { headers: authorizationHeader}
     ).then(response => {
       if (response.ok) {
         return response.json();
@@ -91,12 +111,48 @@ const Spotify = {
       throw new Error("Request failed!");
     }, networkError => console.log(networkError.message)
     ).then(jsonResponse => {
+
+      // let id = jsonResponse.id;
       return jsonResponse.id;
     });
   },
 
-  postPlaylist(userId, header) {
-    // https://beta.developer.spotify.com/documentation/web-api/reference/playlists/create-playlist/
+  // "Access-Control-Allow-Origin":  "http://localhost:3000/",
+  // "Access-Control-Allow-Methods": "POST",
+  // "Access-Control-Allow-Headers": "Content-Type, Authorization",
+
+  postPlaylist(userId, authorizationHeader, playlistName) {
+    const postUri = BASE_URI + `users/${userId}/playlists`;
+
+    // const postUri = BASE_URI + `users/dk2hqfgbcybxppqeggc4glqqz/playlists`;
+
+    console.log("-- post playlist");
+    console.log(postUri);
+    console.log(userId);
+    // console.log(authorizationHeader);
+
+    return fetch(postUri, {
+      "method": "POST",
+      "headers": {
+        authorizationHeader,
+        "Content-type": "application/json",
+      },
+      "body": {
+        "name": playlistName
+      }
+    }).then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+      console.log(response);
+
+      throw new Error("Request failed!");
+    }, networkError => console.log(networkError.message)
+    ).then(jsonResponse => {
+      console.log(jsonResponse);
+      return jsonResponse;
+    });
+
   }
 
 }
