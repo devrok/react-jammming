@@ -48,7 +48,6 @@ class App extends Component {
       console.log("--- response before setState")
       console.log(resultValue);
       this.setState({searchResults: resultValue});
-
     });
   }
 
@@ -87,7 +86,6 @@ class App extends Component {
 
   render() {
     const results = this.state.searchResults;
-    console.log(results);
 
     // the component for playlist has to be remove actually
     // because if not correct initialized it leads to an error;
