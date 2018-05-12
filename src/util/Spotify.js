@@ -2,9 +2,9 @@ import TrackItem from "../components/helpers/TrackItem.js";
 
 const CLIENT_ID = "994101a1655f491d8e44b2368ec8cc91";
 // public
-const REDIRECT_URI = "https://devrok.github.io/react-jammming/";
+//const REDIRECT_URI = "https://devrok.github.io/react-jammming/";
 // dev
-// const REDIRECT_URI = "http://localhost:3000/";
+const REDIRECT_URI = "http://localhost:3000/";
 
 const BASE_URI = "https://api.spotify.com/v1/";
 
