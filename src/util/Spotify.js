@@ -88,7 +88,9 @@ const Spotify = {
       console.log("TEST");
       console.log(requestedUserId);
 
-      let playlistId = this.postPlaylist(requestedUserId, authorizationHeader, playlistName);
+      this.postPlaylist(requestedUserId, authorizationHeader, playlistName).then(requestedPlaylistId => {
+        console.log(requestedPlaylistId);
+      });
     });
 
 
@@ -132,13 +134,15 @@ const Spotify = {
     // console.log(authorizationHeader);
 
     return fetch(postUri, {
-      "method": "POST",
-      "headers": {
+      method: "POST",
+      headers: {
         authorizationHeader,
-        "Content-type": "application/json",
+        "Content-type": "application/json"
       },
-      "body": {
-        "name": playlistName
+      body: {
+        "name": playlistName,
+        "description": "",
+        "public": false,
       }
     }).then(response => {
       if (response.ok) {
