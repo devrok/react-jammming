@@ -3,7 +3,7 @@ import "./App.css";
 import SearchBar from "../SearchBar/SearchBar.js";
 import SearchResults from "../SearchResults/SearchResults.js";
 import Playlist from "../Playlist/Playlist.js";
-import TrackItem from "../helpers/TrackItem.js";
+// import TrackItem from "../helpers/TrackItem.js";
 import Spotify from "../../util/Spotify.js";
 
 class App extends Component {
@@ -82,11 +82,16 @@ class App extends Component {
     });
 
     Spotify.savePlaylist(this.state.playlistName, trackUris);
+
+    // resest playlist after save
+    this.setState({
+      playlistName: "new playlist",
+      playlistTracks: []
+    });
+
   }
 
   render() {
-    const results = this.state.searchResults;
-
     // the component for playlist has to be remove actually
     // because if not correct initialized it leads to an error;
     // 1hour of my life! => AAAAAAH!

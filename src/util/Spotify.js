@@ -85,6 +85,7 @@ const Spotify = {
         console.log(requestedPlaylistId);
         this.addTracks(requestedUserId, requestedPlaylistId, accessToken, trackUris).then(response => {
           console.log(response);
+          return response;
         })
       });
     });
