@@ -3,7 +3,6 @@ import "./App.css";
 import SearchBar from "../SearchBar/SearchBar.js";
 import SearchResults from "../SearchResults/SearchResults.js";
 import Playlist from "../Playlist/Playlist.js";
-// import TrackItem from "../helpers/TrackItem.js";
 import Spotify from "../../util/Spotify.js";
 
 class App extends Component {
@@ -11,19 +10,9 @@ class App extends Component {
     super(props);
 
     const mySearchResults = [];
-    //
-    // const mySearchResults = [
-    //   new TrackItem(1, "Song 1", "Artist 1", "Album 1", "uri"),
-    //   new TrackItem(2, "Song 2", "Artist 2", "Album 2", "uri"),
-    // ];
 
-    const myPlaylistName = "new playlist";
+    const myPlaylistName = "new playlistname";
     const myPlaylistTracks = [];
-    // const myPlaylistTracks = [
-    //   new TrackItem(1, "Song 1", "Artist 1", "Album 1", "uri"),
-    //   new TrackItem(3, "Song 3", "Artist 3", "Album 3", "uri"),
-    //   new TrackItem(4, "Song 4", "Artist 4", "Album 4", "uri"),
-    // ];
 
     this.state = { searchResults: mySearchResults,
       playlistName: myPlaylistName,
@@ -83,7 +72,7 @@ class App extends Component {
 
     Spotify.savePlaylist(this.state.playlistName, trackUris);
 
-    // resest playlist after save
+    // reset playlist after save
     this.setState({
       playlistName: "new playlist",
       playlistTracks: []
@@ -92,9 +81,6 @@ class App extends Component {
   }
 
   render() {
-    // the component for playlist has to be remove actually
-    // because if not correct initialized it leads to an error;
-    // 1hour of my life! => AAAAAAH!
     return (
       <div>
         <h1>Ja<span className="highlight">mmm</span>ing</h1>
