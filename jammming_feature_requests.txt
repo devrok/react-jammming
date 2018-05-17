@@ -1,2 +1,5 @@
-* Pressing enter triggers a search
+* Feature 1 - Pressing enter triggers a search
 https://docs.google.com/document/d/15JLhyDdPPxzvs5ueUmkGj3na2Q-3hnRPX5NhPw5Gvp0/edit?usp=sharing
+
+* Feature 2 - Only display songs not currently present in the playlist in the search results
+https://docs.google.com/document/d/1BegF7k31OvzDCf-ocgcSknVzSM7T5DJMLVycumEFiQw/edit?usp=sharing

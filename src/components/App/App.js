@@ -47,21 +47,32 @@ class App extends Component {
 
   addTrack(track) {
     console.log("-- App.js -- addTrack: " + track.id);
-    const tracks = this.state.playlistTracks;
-    if (tracks.some(trackVal => trackVal.id === track.id)) {
-      console.log("Track already exists");
-      return;
-    }
-    tracks.push(track);
-    this.setState({playlistTracks: tracks});
+    const resultTracks = this.removeFromList(track, this.state.searchResults);
+    const playlistTracks = this.state.playlistTracks;
+    playlistTracks.push(track);
+    // if (tracks.some(trackVal => trackVal.id === track.id)) {
+    //   console.log("Track already exists");
+    //   return;
+    // }
+
+    this.setState({playlistTracks: playlistTracks, searchResults: resultTracks});
   }
 
   removeTrack(track) {
     console.log("-- App.js -- removeTrack: " + track.id);
-    const tracks = this.state.playlistTracks.filter(element => {
+    const playlistTracks = this.removeFromList(track, this.state.playlistTracks);
+    const resultTracks = this.state.searchResults;
+    // resultTracks.splice(track.pos, 0, track);
+    resultTracks.push(track);
+    resultTracks.sort(function(a, b){return a.pos - b.pos});
+
+    this.setState({playlistTracks: playlistTracks, searchResults: resultTracks});
+  }
+
+  removeFromList(track, list) {
+    return list.filter(element => {
       return element.id !== track.id;
     });
-    this.setState({playlistTracks: tracks});
   }
 
   savePlaylist() {

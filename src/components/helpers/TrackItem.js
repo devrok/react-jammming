@@ -1,10 +1,11 @@
 class TrackItem {
-  constructor(id, name, artist, album, uri) {
+  constructor(id, name, artist, album, uri, pos) {
     this._id = id;
     this._name = name;
     this._artist = artist;
     this._album = album;
     this._uri = uri;
+    this._pos = pos;
   }
 
   get id(){
@@ -25,6 +26,10 @@ class TrackItem {
 
   get uri() {
     return this._uri;
+  }
+
+  get pos() {
+    return this._pos;
   }
 }
 

@@ -65,12 +65,14 @@ const Spotify = {
     ).then(jsonResponse => {
 
       if (jsonResponse.tracks) {
+        let pos = -1;
         let resultArray = jsonResponse.tracks.items.map(item =>
           new TrackItem(item.id,
             item.name,
             item.artists[0].name,
             item.album.name,
-            item.uri)
+            item.uri,
+            ++pos)
         );
 
         return resultArray;
