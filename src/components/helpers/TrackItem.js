@@ -1,11 +1,11 @@
 class TrackItem {
-  constructor(id, name, artist, album, uri, pos) {
+  constructor(id, name, artist, album, uri) {
     this._id = id;
     this._name = name;
     this._artist = artist;
     this._album = album;
     this._uri = uri;
-    this._pos = pos;
+    this._alreadyInPlaylist = false;
   }
 
   get id(){
@@ -28,8 +28,12 @@ class TrackItem {
     return this._uri;
   }
 
-  get pos() {
-    return this._pos;
+  get alreadyInPlaylist() {
+    return this._alreadyInPlaylist;
+  }
+
+  set alreadyInPlaylist(value) {
+    this._alreadyInPlaylist = value;
   }
 }
 

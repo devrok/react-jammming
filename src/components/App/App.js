@@ -27,16 +27,28 @@ class App extends Component {
   }
 
   search(term) {
-
     if (!term) return;
 
     console.log("-- App.js -- search");
     console.log("Searchterm: " + term);
 
-    Spotify.search(term).then(resultValue => {
+    const playlistTrackIds = this.state.playlistTracks.length === 0
+      ? []
+      : this.state.playlistTracks.map(track => track.id);
+
+    Spotify.search(term, playlistTrackIds).then(resultValue => {
       console.log("--- response before setState")
       console.log(resultValue);
-      this.setState({searchResults: resultValue});
+
+      const filteredResult = this.filterResultValue(resultValue, playlistTrackIds);
+      this.setState({searchResults: filteredResult});
+      //this.setState({searchResults: resultValue});
+    });
+  }
+
+  filterResultValue(resultValue, playlistIds) {
+    return resultValue.filter(resultItem => {
+      return !playlistIds.some(playlistId => playlistId === resultItem.id);
     });
   }
 
@@ -47,26 +59,21 @@ class App extends Component {
 
   addTrack(track) {
     console.log("-- App.js -- addTrack: " + track.id);
-    const resultTracks = this.removeFromList(track, this.state.searchResults);
+    track.alreadyInPlaylist = true;
+
     const playlistTracks = this.state.playlistTracks;
     playlistTracks.push(track);
-    // if (tracks.some(trackVal => trackVal.id === track.id)) {
-    //   console.log("Track already exists");
-    //   return;
-    // }
 
-    this.setState({playlistTracks: playlistTracks, searchResults: resultTracks});
+    this.setState({playlistTracks: playlistTracks});
   }
 
   removeTrack(track) {
     console.log("-- App.js -- removeTrack: " + track.id);
-    const playlistTracks = this.removeFromList(track, this.state.playlistTracks);
-    const resultTracks = this.state.searchResults;
-    // resultTracks.splice(track.pos, 0, track);
-    resultTracks.push(track);
-    resultTracks.sort(function(a, b){return a.pos - b.pos});
+    track.alreadyInPlaylist = false;
 
-    this.setState({playlistTracks: playlistTracks, searchResults: resultTracks});
+    const playlistTracks = this.removeFromList(track, this.state.playlistTracks);
+
+    this.setState({playlistTracks: playlistTracks});
   }
 
   removeFromList(track, list) {

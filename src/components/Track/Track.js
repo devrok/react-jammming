@@ -26,9 +26,12 @@ class Track extends Component{
           <h3>{this.props.track.name}</h3>
           <p>{this.props.track.artist} | {this.props.track.album}</p>
         </div>
-        { this.props.isRemoval
+        {
+          this.props.isRemoval
           ? <a className="Track-action" onClick={this.removeTrack}>-</a>
-          : <a className="Track-action" onClick={this.addTrack}>+</a>
+          : this.props.track.alreadyInPlaylist
+            ? <p>!!Added!!</p>
+            : <a className="Track-action" onClick={this.addTrack}>+</a>
         }
       </div>
     );

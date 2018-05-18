@@ -44,12 +44,59 @@ const Spotify = {
     return undefined;
   },
 
-  search(searchTerm) {
+  search(searchTerm, playlistTracks) {
     let accessToken = this.getAccessToken();
 
     if (!searchTerm) return [];
 
-    const searchUri = BASE_URI + `search?type=track&q=${searchTerm}`;
+    //let searchUri = BASE_URI + `search?type=track&q=${searchTerm.replace(" ", "%20")}`;
+
+    let searchUri = BASE_URI + `search?q=${searchTerm.replace(" ", "%20")}`;
+
+    let limit = 20 + playlistTracks.length; // default
+
+    // reset to maximum if necessary
+    if (limit > 50) {
+      limit = 50;
+      // possible need of paging?
+    }
+
+    searchUri += `&limit=${limit}`;
+
+
+    // const trackIdsCount = trackIdsToExclude.length;
+    // if (trackIdsCount > 0) {
+    //   // const excludeQuery ="&%20NOT%20" + trackIdsToExclude.join("&%20NOT%20");
+    //   //const excludeQuery ="%20NOT%20id:" + trackIdsToExclude.join("%20NOT%20id:");
+    //
+    //
+    //   //const excludeQuery ="&%20NOT%20" + trackIdsToExclude.join( "&%20NOT%20");
+    //   // searchUri += `%20NOT%20${}`
+    //
+    //   // maximum limit in spotify API is 50
+    //   // if this limit is reached, we should shift the offset
+    //
+    //   // default limit: 20 excluded 3 limit should be 23
+    //
+    //   if (trackIdsCount > 0) {
+    //     searchUri += excludeQuery;
+    //
+    //   }
+    //
+    //   // const limit = trackIdsCount + 20
+    //   //
+    //   // if (limit > 50) {
+    //   //   searchUri += excludeQuery + `&offset=${trackIdsCount}`;
+    //   // } else {
+    //   //   searchUri += excludeQuery + `&limit=${limit}`;
+    //   // }
+    //
+    //
+    // }
+
+    searchUri += "&type=track";
+
+    console.log(searchUri);
 
     return fetch(searchUri, {
       headers: {
@@ -65,14 +112,12 @@ const Spotify = {
     ).then(jsonResponse => {
 
       if (jsonResponse.tracks) {
-        let pos = -1;
         let resultArray = jsonResponse.tracks.items.map(item =>
           new TrackItem(item.id,
             item.name,
             item.artists[0].name,
             item.album.name,
-            item.uri,
-            ++pos)
+            item.uri)
         );
 
         return resultArray;
