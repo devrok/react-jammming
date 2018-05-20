@@ -36,13 +36,12 @@ class App extends Component {
       ? []
       : this.state.playlistTracks.map(track => track.id);
 
-    Spotify.search(term, playlistTrackIds).then(resultValue => {
+    Spotify.search(term, playlistTrackIds.length).then(resultValue => {
       console.log("--- response before setState")
       console.log(resultValue);
 
       const filteredResult = this.filterResultValue(resultValue, playlistTrackIds);
       this.setState({searchResults: filteredResult});
-      //this.setState({searchResults: resultValue});
     });
   }
 

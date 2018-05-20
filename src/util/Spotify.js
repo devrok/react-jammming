@@ -16,6 +16,7 @@ let expiresIn;
 
 const Spotify = {
 
+  // --
   getAccessToken() {
     if (userAccessToken) {
       return userAccessToken;
@@ -36,6 +37,7 @@ const Spotify = {
     return userAccessToken;
   },
 
+  // --
   parseValue(currentUri, pattern) {
     const parsedValues = currentUri.match(pattern);
 
@@ -44,59 +46,21 @@ const Spotify = {
     return undefined;
   },
 
-  search(searchTerm, playlistTracks) {
+  // --
+  search(searchTerm, currentPlaylistLength) {
     let accessToken = this.getAccessToken();
 
     if (!searchTerm) return [];
 
-    //let searchUri = BASE_URI + `search?type=track&q=${searchTerm.replace(" ", "%20")}`;
-
-    let searchUri = BASE_URI + `search?q=${searchTerm.replace(" ", "%20")}`;
-
-    let limit = 20 + playlistTracks.length; // default
+    // default limit is 20
+    let limit = 20 + currentPlaylistLength;
 
     // reset to maximum if necessary
     if (limit > 50) {
       limit = 50;
-      // possible need of paging?
     }
 
-    searchUri += `&limit=${limit}`;
-
-
-    // const trackIdsCount = trackIdsToExclude.length;
-    // if (trackIdsCount > 0) {
-    //   // const excludeQuery ="&%20NOT%20" + trackIdsToExclude.join("&%20NOT%20");
-    //   //const excludeQuery ="%20NOT%20id:" + trackIdsToExclude.join("%20NOT%20id:");
-    //
-    //
-    //   //const excludeQuery ="&%20NOT%20" + trackIdsToExclude.join( "&%20NOT%20");
-    //   // searchUri += `%20NOT%20${}`
-    //
-    //   // maximum limit in spotify API is 50
-    //   // if this limit is reached, we should shift the offset
-    //
-    //   // default limit: 20 excluded 3 limit should be 23
-    //
-    //   if (trackIdsCount > 0) {
-    //     searchUri += excludeQuery;
-    //
-    //   }
-    //
-    //   // const limit = trackIdsCount + 20
-    //   //
-    //   // if (limit > 50) {
-    //   //   searchUri += excludeQuery + `&offset=${trackIdsCount}`;
-    //   // } else {
-    //   //   searchUri += excludeQuery + `&limit=${limit}`;
-    //   // }
-    //
-    //
-    // }
-
-    searchUri += "&type=track";
-
-    console.log(searchUri);
+    const searchUri = BASE_URI + `search?type=track&q=${searchTerm.replace(" ", "%20")}&limit=${limit}`;
 
     return fetch(searchUri, {
       headers: {
@@ -125,6 +89,7 @@ const Spotify = {
     });
   },
 
+  // --
   savePlaylist(playlistName, trackUris) {
     if (!playlistName || !trackUris || trackUris.length === 0) return;
 
@@ -141,6 +106,7 @@ const Spotify = {
     });
   },
 
+  // --
   getUserId(accessToken) {
     const requestUri = BASE_URI + "me";
     return fetch(requestUri,
@@ -160,6 +126,7 @@ const Spotify = {
     });
   },
 
+  // --
   postPlaylist(userId, accessToken, playlistName) {
     const postUri = BASE_URI + `users/${userId}/playlists`;
 
@@ -186,17 +153,9 @@ const Spotify = {
 
   },
 
+  // --
   addTracks(userId, playlistId, accessToken, trackUris) {
     const postUri = BASE_URI + `users/${userId}/playlists/${playlistId}/tracks`;
-
-    // console.log(postUri);
-    // console.log(userId);
-    // console.log(playlistId);
-    // console.log(JSON.stringify({ "uris": trackUris }));
-    //
-    // if (this.getPlaylistId(accessToken,userId, playlistId)) {
-    //   console.log("Playlist found");
-    // }
 
     return fetch(postUri, {
         method: "POST",
