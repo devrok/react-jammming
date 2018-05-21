@@ -1,4 +1,5 @@
 import TrackItem from "../components/helpers/TrackItem.js";
+import PagingItem from "../components/helpers/PagingItem.js";
 
 const CLIENT_ID = "994101a1655f491d8e44b2368ec8cc91";
 // public
@@ -27,13 +28,14 @@ const Spotify = {
     expiresIn = this.parseValue(currentUri, /expires_in=([^&]*)/);
 
     if (userAccessToken && expiresIn) {
+      console.log("authentication ok");
       window.setTimeout(() => userAccessToken = "", expiresIn * 1000);
       window.history.pushState("Access Token", null, "/");
     } else {
       let redirect = `https://accounts.spotify.com/authorize?client_id=${CLIENT_ID}&response_type=token&scope=playlist-modify-private&redirect_uri=${REDIRECT_URI}`;
+      console.log("redirect");
       window.location.replace(redirect);
     }
-
     return userAccessToken;
   },
 
@@ -84,7 +86,49 @@ const Spotify = {
             item.uri)
         );
 
-        return resultArray;
+        //return resultArray;
+        return new PagingItem(resultArray, jsonResponse.tracks.previous,
+          jsonResponse.tracks.next,
+          jsonResponse.tracks.offset,
+          jsonResponse.tracks.total);
+      }
+    });
+  },
+
+  searchByTerm(term) {
+    const searchUri = BASE_URI + `search?type=track&q=${term.replace(" ", "%20")}&limit=50`;
+    return this.searchByUri(searchUri)
+  },
+
+  searchByUri(searchUri) {
+    let accessToken = this.getAccessToken();
+
+    return fetch(searchUri, {
+      headers: {
+        "Authorization": `Bearer ${accessToken}`
+      }
+    }).then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+
+      throw new Error("Request failed!");
+    }, networkError => console.log(networkError.message)
+    ).then(jsonResponse => {
+
+      if (jsonResponse.tracks) {
+        let resultArray = jsonResponse.tracks.items.map(item =>
+          new TrackItem(item.id,
+            item.name,
+            item.artists[0].name,
+            item.album.name,
+            item.uri)
+        );
+
+        return new PagingItem(resultArray, jsonResponse.tracks.previous,
+          jsonResponse.tracks.next,
+          jsonResponse.tracks.offset,
+          jsonResponse.tracks.total);
       }
     });
   },

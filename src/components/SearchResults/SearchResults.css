@@ -7,6 +7,22 @@
   box-shadow: 0 4px 2px 2px #000000;
 }
 
+.SearchResultsPaging {
+  display: flex;
+  justify-content: center;
+}
+
+.SearchResultsPaging p {
+  font-style: italic;
+  display: inline-block;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+.SearchResultsPaging-Action {
+  cursor: pointer;
+}
+
 ::-webkit-scrollbar {
     width: 0px;
     background: transparent;

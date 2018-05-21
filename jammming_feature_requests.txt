@@ -1,3 +1,6 @@
+* Feature 3 - Make the whole search result available
+https://docs.google.com/document/d/1jVcHY6Xik94o3MlLy3Wk0jK524M6k8OcqOlOTnK7KHo/edit?usp=sharing
+
 * Feature 1 - Pressing enter triggers a search
 https://docs.google.com/document/d/15JLhyDdPPxzvs5ueUmkGj3na2Q-3hnRPX5NhPw5Gvp0/edit?usp=sharing
 
