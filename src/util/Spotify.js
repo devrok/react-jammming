@@ -9,8 +9,9 @@ const REDIRECT_URI = "http://localhost:3000/";
 // surge
 //const REDIRECT_URI = "https://devrok_jammming.surge.ch/";
 
-
 const BASE_URI = "https://api.spotify.com/v1/";
+
+const QUERYLIMIT = 50;
 
 let userAccessToken;
 let expiresIn;
@@ -62,7 +63,7 @@ const Spotify = {
       limit = 50;
     }
 
-    const searchUri = BASE_URI + `search?type=track&q=${searchTerm.replace(" ", "%20")}&limit=${limit}`;
+    const searchUri = BASE_URI + `search?type=track&q=${searchTerm.replace(" ", "%20")}&limit=${QUERYLIMIT}`;
 
     return fetch(searchUri, {
       headers: {
@@ -90,13 +91,15 @@ const Spotify = {
         return new PagingItem(resultArray, jsonResponse.tracks.previous,
           jsonResponse.tracks.next,
           jsonResponse.tracks.offset,
-          jsonResponse.tracks.total);
+          jsonResponse.tracks.total,
+          QUERYLIMIT
+        );
       }
     });
   },
 
   searchByTerm(term) {
-    const searchUri = BASE_URI + `search?type=track&q=${term.replace(" ", "%20")}&limit=50`;
+    const searchUri = BASE_URI + `search?type=track&q=${term.replace(" ", "%20")}&limit=${QUERYLIMIT}`;
     return this.searchByUri(searchUri)
   },
 
@@ -128,7 +131,9 @@ const Spotify = {
         return new PagingItem(resultArray, jsonResponse.tracks.previous,
           jsonResponse.tracks.next,
           jsonResponse.tracks.offset,
-          jsonResponse.tracks.total);
+          jsonResponse.tracks.total,
+          QUERYLIMIT
+        );
       }
     });
   },
@@ -225,3 +230,4 @@ const Spotify = {
 }
 
 export default Spotify;
+export { QUERYLIMIT };

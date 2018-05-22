@@ -3,7 +3,7 @@ import "./App.css";
 import SearchBar from "../SearchBar/SearchBar.js";
 import SearchResults from "../SearchResults/SearchResults.js";
 import Playlist from "../Playlist/Playlist.js";
-import Spotify from "../../util/Spotify.js";
+import Spotify, {QUERYLIMIT} from "../../util/Spotify.js";
 import PagingItem from "../helpers/PagingItem.js";
 
 class App extends Component {
@@ -11,7 +11,7 @@ class App extends Component {
     super(props);
 
     const mySearchResults = [];
-    const mySearchResultItem = new PagingItem([], "", "", 0, 0);
+    const mySearchResultItem = new PagingItem([], "", "", 0, 0, 0);
     const myPlaylistName = "new playlistname";
     const myPlaylistTracks = [];
 
@@ -36,7 +36,6 @@ class App extends Component {
     console.log("-- App.js -- search");
     console.log("Searchterm: " + term);
 
-    // Spotify.search(term, playlistTrackIds.length).then(resultValue => {
     Spotify.searchByTerm(term).then(resultValue => {
       this.filterResultAndSetState(resultValue);
     });
@@ -47,7 +46,8 @@ class App extends Component {
       resultItem.previous,
       resultItem.next,
       resultItem.offset,
-      resultItem.total
+      resultItem.total,
+      QUERYLIMIT
     );
   }
 
@@ -103,16 +103,18 @@ class App extends Component {
 
   }
 
-  loadPreviousPage(previousPageUrl) {
-    console.log("--- Previous page: " + previousPageUrl);
-    Spotify.searchByUri(previousPageUrl).then(resultValue => {
+  loadPreviousPage(previousPageUri) {
+    console.log("--- Previous page: " + previousPageUri);
+    if (!previousPageUri) return;
+    Spotify.searchByUri(previousPageUri).then(resultValue => {
         this.filterResultAndSetState(resultValue);
     });
   }
 
-  loadNextPage(nextPageUrl) {
-    console.log("--- Next page: " + nextPageUrl);
-    Spotify.searchByUri(nextPageUrl).then(resultValue => {
+  loadNextPage(nextPageUri) {
+    console.log("--- Next page: " + nextPageUri);
+    if (!nextPageUri) return;
+    Spotify.searchByUri(nextPageUri).then(resultValue => {
       this.filterResultAndSetState(resultValue);
     });
   }
@@ -125,11 +127,9 @@ class App extends Component {
       ? []
       : this.state.playlistTracks.map(track => track.id);
 
-    const filteredResult = this.filterResultValue(resultValue.items, playlistTrackIds);
     const filteredResultItem = this.filterResultItem(resultValue, playlistTrackIds);
 
     this.setState({
-      searchResults: filteredResult,
       searchResultItem: filteredResultItem
     });
   }
@@ -141,9 +141,8 @@ class App extends Component {
         <div className="App">
           <SearchBar onSearch={this.search.bind(this)}/>
           <div className="App-playlist">
-            <SearchResults searchResults={this.state.searchResults}
+            <SearchResults searchResultItem={this.state.searchResultItem}
               onAdd={this.addTrack.bind(this)}
-              searchResultItem={this.state.searchResultItem}
               onLoadPreviosPage={this.loadPreviousPage.bind(this)}
               onLoadNextPage={this.loadNextPage.bind(this)}
               />
