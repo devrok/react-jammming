@@ -10,13 +10,16 @@ const REDIRECT_URI = "http://localhost:3000/";
 //const REDIRECT_URI = "https://devrok_jammming.surge.ch/";
 
 const BASE_URI = "https://api.spotify.com/v1/";
-
 const QUERYLIMIT = 50;
 
 let userAccessToken;
 let expiresIn;
 
 const Spotify = {
+  // --
+  init() {
+    this.getAccessToken();
+  },
 
   // --
   getAccessToken() {
@@ -30,13 +33,17 @@ const Spotify = {
 
     if (userAccessToken && expiresIn) {
       console.log("authentication ok");
-      window.setTimeout(() => userAccessToken = "", expiresIn * 1000);
+      window.setTimeout(() => {
+        console.log("-- timeout expired --")
+        userAccessToken = "";
+      }, expiresIn * 1000);
       window.history.pushState("Access Token", null, "/");
     } else {
       let redirect = `https://accounts.spotify.com/authorize?client_id=${CLIENT_ID}&response_type=token&scope=playlist-modify-private&redirect_uri=${REDIRECT_URI}`;
       console.log("redirect");
       window.location.replace(redirect);
     }
+
     return userAccessToken;
   },
 
@@ -47,55 +54,6 @@ const Spotify = {
     if (parsedValues && parsedValues.length === 2) return parsedValues[1];
 
     return undefined;
-  },
-
-  // --
-  search(searchTerm, currentPlaylistLength) {
-    let accessToken = this.getAccessToken();
-
-    if (!searchTerm) return [];
-
-    // default limit is 20
-    let limit = 20 + currentPlaylistLength;
-
-    // reset to maximum if necessary
-    if (limit > 50) {
-      limit = 50;
-    }
-
-    const searchUri = BASE_URI + `search?type=track&q=${searchTerm.replace(" ", "%20")}&limit=${QUERYLIMIT}`;
-
-    return fetch(searchUri, {
-      headers: {
-        "Authorization": `Bearer ${accessToken}`
-      }
-    }).then(response => {
-      if (response.ok) {
-        return response.json();
-      }
-
-      throw new Error("Request failed!");
-    }, networkError => console.log(networkError.message)
-    ).then(jsonResponse => {
-
-      if (jsonResponse.tracks) {
-        let resultArray = jsonResponse.tracks.items.map(item =>
-          new TrackItem(item.id,
-            item.name,
-            item.artists[0].name,
-            item.album.name,
-            item.uri)
-        );
-
-        //return resultArray;
-        return new PagingItem(resultArray, jsonResponse.tracks.previous,
-          jsonResponse.tracks.next,
-          jsonResponse.tracks.offset,
-          jsonResponse.tracks.total,
-          QUERYLIMIT
-        );
-      }
-    });
   },
 
   searchByTerm(term) {
@@ -226,7 +184,6 @@ const Spotify = {
       return jsonResponse;
     });
   }
-
 }
 
 export default Spotify;

@@ -30,6 +30,11 @@ class App extends Component {
     this.loadNextPage = this.loadNextPage.bind(this);
   }
 
+  componentDidMount() {
+    console.log("--- App.js mounted ---");
+    Spotify.init();
+  }
+
   search(term) {
     if (!term) return;
 
