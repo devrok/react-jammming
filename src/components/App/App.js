@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import ReactDOM from "react-dom";
 import "./App.css";
 import SearchBar from "../SearchBar/SearchBar.js";
 import SearchResults from "../SearchResults/SearchResults.js";
@@ -28,6 +29,8 @@ class App extends Component {
     this.savePlaylist = this.savePlaylist.bind(this);
     this.loadPreviousPage = this.loadPreviousPage.bind(this);
     this.loadNextPage = this.loadNextPage.bind(this);
+    this.playTrack = this.playTrack.bind(this);
+    this.stopTrack = this.stopTrack.bind(this);
   }
 
   componentDidMount() {
@@ -139,10 +142,30 @@ class App extends Component {
     });
   }
 
+  playTrack(track) {
+
+    const playerSource = ReactDOM.findDOMNode(this.refs.playerSource);
+    const player = ReactDOM.findDOMNode(this.refs.player);
+
+    // playerSource.src ="https://p.scdn.co/mp3-preview/993540fd7aa1a0a44bb0d1b2c82092578c831b07?cid=994101a1655f491d8e44b2368ec8cc91"; //track.preview_uri;
+    playerSource.src = track.preview_uri;
+    player.load();
+    player.play();
+  }
+
+  stopTrack(track) {
+    const player = ReactDOM.findDOMNode(this.refs.player);
+    player.pause();
+    player.currentTime = 0;
+  }
+
   render() {
     return (
       <div>
         <h1>Ja<span className="highlight">mmm</span>ing</h1>
+        <video ref="player">
+          <source ref="playerSource" src="" type="audio/mpeg"/>
+        </video>
         <div className="App">
           <SearchBar onSearch={this.search.bind(this)}/>
           <div className="App-playlist">
@@ -150,12 +173,17 @@ class App extends Component {
               onAdd={this.addTrack.bind(this)}
               onLoadPreviosPage={this.loadPreviousPage.bind(this)}
               onLoadNextPage={this.loadNextPage.bind(this)}
+              onPlayTrack={this.playTrack.bind(this)}
+              onStopTrack={this.stopTrack.bind(this)}
               />
             <Playlist playlistName={this.state.playlistName}
               playlistTracks={this.state.playlistTracks}
               onRemove={this.removeTrack.bind(this)}
               onNameChange={this.updatePlaylistName.bind(this)}
-              onSave={this.savePlaylist.bind(this)}/>
+              onSave={this.savePlaylist.bind(this)}
+              onPlayTrack={this.playTrack.bind(this)}
+              onStopTrack={this.stopTrack.bind(this)}
+            />
           </div>
         </div>
       </div>

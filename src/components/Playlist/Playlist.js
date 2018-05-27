@@ -23,7 +23,9 @@ class Playlist extends Component {
           onChange={this.handleInputChange.bind(this)}/>
         <TrackList tracks={this.props.playlistTracks}
           onRemove={this.props.onRemove}
-          isRemoval={true} />
+          isRemoval={true}
+          onPlayTrack={this.props.onPlayTrack}
+          onStopTrack={this.props.onStopTrack}/>
         <a className="Playlist-save"
           onClick={this.props.onSave}>SAVE TO SPOTIFY</a>
       </div>
@@ -36,7 +38,9 @@ Playlist.propTypes = {
   playlistTracks: PropTypes.arrayOf(PropTypes.instanceOf(TrackItem)),
   onRemove: PropTypes.func,
   onNameChange: PropTypes.func,
-  onSave: PropTypes.func
+  onSave: PropTypes.func,
+  onPlayTrack: PropTypes.func,
+  onStopTrack: PropTypes.func
 };
 
 export default Playlist;

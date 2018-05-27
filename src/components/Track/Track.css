@@ -21,6 +21,31 @@
   flex-direction: column;
   justify-content: center;
   height: 72px;
+  position: relative;
+}
+
+/* overlay to show play and stop button on hovering */
+.Track-information-overlay {
+  opacity: 0;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  color: #ffffff;
+  background: rgba(0, 0, 0, 0.4); /* Black see-through */
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.Track-information-overlay a {
+  cursor: pointer;
+  padding: 0.125rem;
+}
+.Track-information:hover .Track-information-overlay {
+  opacity: 1;
+}
+.Track-information-overlay i:hover{
+  color: #6c41ec;;
 }
 
 .Track-information h3 {

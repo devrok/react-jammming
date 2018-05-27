@@ -83,7 +83,8 @@ const Spotify = {
             item.name,
             item.artists[0].name,
             item.album.name,
-            item.uri)
+            item.uri,
+            item.preview_url)
         );
 
         return new PagingItem(resultArray, jsonResponse.tracks.previous,

@@ -44,7 +44,10 @@ class SearchResults extends Component {
         }
         <TrackList tracks={this.props.searchResultItem.items}
           onAdd={this.props.onAdd}
-          isRemoval={false} />
+          isRemoval={false}
+          onPlayTrack={this.props.onPlayTrack}
+          onStopTrack={this.props.onStopTrack}
+          />
       </div>
     );
   }
@@ -54,7 +57,9 @@ SearchResults.propTypes = {
   searchResultItem: PropTypes.instanceOf(PagingItem),
   onAdd: PropTypes.func,
   onLoadPreviosPage: PropTypes.func,
-  onLoadNextPage: PropTypes.func
+  onLoadNextPage: PropTypes.func,
+  onPlayTrack: PropTypes.func,
+  onStopTrack: PropTypes.func
 }
 
 export default SearchResults;

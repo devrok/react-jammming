@@ -9,6 +9,8 @@ class Track extends Component{
 
     this.addTrack = this.addTrack.bind(this);
     this.removeTrack = this.removeTrack.bind(this);
+    this.playTrack = this.playTrack.bind(this);
+    this.stopTrack = this.stopTrack.bind(this);
   }
 
   addTrack() {
@@ -19,12 +21,24 @@ class Track extends Component{
     this.props.onRemove(this.props.track);
   }
 
+  playTrack() {
+    this.props.onPlayTrack(this.props.track);
+  }
+
+  stopTrack() {
+    this.props.onStopTrack(this.props.track);
+  }
+
   render() {
     return (
       <div className="Track">
         <div className="Track-information">
           <h3>{this.props.track.name}</h3>
           <p>{this.props.track.artist} | {this.props.track.album}</p>
+          <div className="Track-information-overlay">
+            <a onClick={this.playTrack}><i className="fa fa-play-circle-o fa-lg"></i></a>
+            <a onClick={this.stopTrack}><i className="fa fa-stop-circle-o fa-lg"></i></a>
+          </div>
         </div>
         {
           this.props.isRemoval
@@ -40,7 +54,9 @@ class Track extends Component{
 
 Track.propTypes = {
   track: PropTypes.instanceOf(TrackItem),
-  isRemoval: PropTypes.bool
+  isRemoval: PropTypes.bool,
+  onPlayTrack: PropTypes.func,
+  onStopTrack: PropTypes.func
 }
 
 export default Track;
