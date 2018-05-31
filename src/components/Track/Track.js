@@ -26,7 +26,7 @@ class Track extends Component{
   }
 
   stopTrack() {
-    this.props.onStopTrack(this.props.track);
+    this.props.onStopTrack();
   }
 
   render() {

@@ -15,11 +15,13 @@ class App extends Component {
     const mySearchResultItem = new PagingItem([], "", "", 0, 0, 0);
     const myPlaylistName = "new playlistname";
     const myPlaylistTracks = [];
+    const myTrackInfo = "";
 
     this.state = { searchResults: mySearchResults,
       searchResultItem: mySearchResultItem,
       playlistName: myPlaylistName,
-      playlistTracks: myPlaylistTracks
+      playlistTracks: myPlaylistTracks,
+      trackInfo: myTrackInfo
     };
 
     this.search = this.search.bind(this);
@@ -40,6 +42,10 @@ class App extends Component {
 
   search(term) {
     if (!term) return;
+    // if (!term) {
+    //   term = Spotify.parseValue(window.location.href, /state=([^&]*)/);
+    //   if (!term) return;
+    // }
 
     console.log("-- App.js -- search");
     console.log("Searchterm: " + term);
@@ -143,20 +149,20 @@ class App extends Component {
   }
 
   playTrack(track) {
-
     const playerSource = ReactDOM.findDOMNode(this.refs.playerSource);
     const player = ReactDOM.findDOMNode(this.refs.player);
-
     // playerSource.src ="https://p.scdn.co/mp3-preview/993540fd7aa1a0a44bb0d1b2c82092578c831b07?cid=994101a1655f491d8e44b2368ec8cc91"; //track.preview_uri;
     playerSource.src = track.preview_uri;
     player.load();
     player.play();
+    this.setState({ trackInfo: track.name + " - " + track.artist + " | " + track.album});
   }
 
-  stopTrack(track) {
+  stopTrack() {
     const player = ReactDOM.findDOMNode(this.refs.player);
     player.pause();
     player.currentTime = 0;
+    // this.setState({ trackInfo: "" });
   }
 
   render() {
@@ -168,6 +174,7 @@ class App extends Component {
         </video>
         <div className="App">
           <SearchBar onSearch={this.search.bind(this)}/>
+          <div className="App-track-info">{this.state.trackInfo}</div>
           <div className="App-playlist">
             <SearchResults searchResultItem={this.state.searchResultItem}
               onAdd={this.addTrack.bind(this)}

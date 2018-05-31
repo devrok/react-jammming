@@ -48,6 +48,14 @@ video {
   display: none;
 }
 
+.App-track-info {
+  min-height: 1.5rem;
+  width: 100%;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-style: italic;
+}
+
 @media only screen and (max-width: 1020px) {
   .App-playlist {
     align-items: center;
