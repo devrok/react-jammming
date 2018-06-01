@@ -1,6 +1,9 @@
 * Feature 4 - Include preview samples for each track
 https://docs.google.com/document/d/1rbLCkI53n_htrxG3tTDhOc7qtR4NAt0e2l0lrKUY8es/edit?usp=sharing
 
+* Feature 5 - After user redirect on login, restoring the search term from before the redirect
+https://docs.google.com/document/d/1borRmGOEN09OtY-zWzYS62UvgVke63F1Vf1mZzEDd6Y/edit?usp=sharing
+
 * Feature 3 - Make the whole search result available (paging)
 https://docs.google.com/document/d/1jVcHY6Xik94o3MlLy3Wk0jK524M6k8OcqOlOTnK7KHo/edit?usp=sharing
 

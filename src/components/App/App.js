@@ -42,10 +42,6 @@ class App extends Component {
 
   search(term) {
     if (!term) return;
-    // if (!term) {
-    //   term = Spotify.parseValue(window.location.href, /state=([^&]*)/);
-    //   if (!term) return;
-    // }
 
     console.log("-- App.js -- search");
     console.log("Searchterm: " + term);

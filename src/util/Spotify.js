@@ -18,7 +18,7 @@ let expiresIn;
 const Spotify = {
   // --
   init() {
-    this.getAccessToken();
+    // this.getAccessToken();
   },
 
   // --
@@ -27,6 +27,21 @@ const Spotify = {
       return userAccessToken;
     }
 
+    return this.internalInitAccessToken();
+  },
+
+  getAccessTokenWithSearchTerm(searchTerm) {
+    if (userAccessToken) {
+      return userAccessToken;
+    }
+
+    console.log("--- store value ---")
+    sessionStorage.setItem('searchTerm', searchTerm);
+
+    return this.internalInitAccessToken();
+  },
+
+  internalInitAccessToken() {
     const currentUri = window.location.href;
     userAccessToken = this.parseValue(currentUri, /access_token=([^&]*)/);
     expiresIn = this.parseValue(currentUri, /expires_in=([^&]*)/);
@@ -39,8 +54,8 @@ const Spotify = {
       }, expiresIn * 1000);
       window.history.pushState("Access Token", null, "/");
     } else {
-      let redirect = `https://accounts.spotify.com/authorize?client_id=${CLIENT_ID}&response_type=token&scope=playlist-modify-private&redirect_uri=${REDIRECT_URI}`;
       console.log("redirect");
+      const redirect = `https://accounts.spotify.com/authorize?client_id=${CLIENT_ID}&response_type=token&scope=playlist-modify-private&redirect_uri=${REDIRECT_URI}&state=redirected`;
       window.location.replace(redirect);
     }
 
@@ -58,18 +73,26 @@ const Spotify = {
 
   searchByTerm(term) {
     const searchUri = BASE_URI + `search?type=track&q=${term.replace(" ", "%20")}&limit=${QUERYLIMIT}`;
-    return this.searchByUri(searchUri)
+    let accessToken = this.getAccessTokenWithSearchTerm(term);
+
+    return this.internalSearch(searchUri, accessToken)
   },
 
   searchByUri(searchUri) {
     let accessToken = this.getAccessToken();
 
+    return this.internalSearch(searchUri, accessToken)
+  },
+
+  internalSearch(searchUri, accessToken) {
     return fetch(searchUri, {
       headers: {
         "Authorization": `Bearer ${accessToken}`
       }
     }).then(response => {
       if (response.ok) {
+        console.log("--- clear stored value ---");
+        sessionStorage.removeItem('searchTerm')
         return response.json();
       }
 
