@@ -6,7 +6,7 @@ class SearchBar extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {term: "", value: ""};
+    this.state = {term: ""};
 
     this.search = this.search.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -15,10 +15,10 @@ class SearchBar extends Component {
 
   componentWillMount() {
     console.log("--- SearchBar.js componentWillMount ---")
-    const searchTerm = sessionStorage.getItem('searchTerm');
+    const searchTerm = sessionStorage.getItem("searchTerm");
     if (searchTerm) {
       console.log("storage value: " + searchTerm);
-      this.setState({term: searchTerm, value: searchTerm });
+      this.setState({term: searchTerm});
     }
   }
 
@@ -28,7 +28,7 @@ class SearchBar extends Component {
 
   handleInputChange(event) {
     const newSearchTerm = event.target.value;
-    this.setState({term: newSearchTerm, value: newSearchTerm});
+    this.setState({term: newSearchTerm });
   }
 
   handleInputKeyPress(event) {
@@ -42,7 +42,7 @@ class SearchBar extends Component {
       <div className="SearchBar">
         <input autoFocus
           placeholder="Enter A Song, Album, or Artist"
-          value={this.state.value}
+          value={this.state.term}
           onChange={this.handleInputChange}
           onKeyPress={this.handleInputKeyPress} />
         <a onClick={this.search}>SEARCH</a>

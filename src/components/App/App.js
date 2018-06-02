@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import "./App.css";
 import SearchBar from "../SearchBar/SearchBar.js";
-import SearchResults from "../SearchResults/SearchResults.js";
+import SearchResults from "../SearchResults/SearchResults.js"; 
 import Playlist from "../Playlist/Playlist.js";
 import Spotify, {QUERYLIMIT} from "../../util/Spotify.js";
 import PagingItem from "../helpers/PagingItem.js";

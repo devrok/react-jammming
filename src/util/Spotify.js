@@ -36,7 +36,7 @@ const Spotify = {
     }
 
     console.log("--- store value ---")
-    sessionStorage.setItem('searchTerm', searchTerm);
+    sessionStorage.setItem("searchTerm", searchTerm);
 
     return this.internalInitAccessToken();
   },
@@ -92,7 +92,7 @@ const Spotify = {
     }).then(response => {
       if (response.ok) {
         console.log("--- clear stored value ---");
-        sessionStorage.removeItem('searchTerm')
+        sessionStorage.removeItem("searchTerm")
         return response.json();
       }
 
